@@ -1,3 +1,8 @@
+<<<<<<< HEAD
 {
     "java.configuration.updateBuildConfiguration": "interactive"
+=======
+{
+    "java.configuration.updateBuildConfiguration": "interactive"
+>>>>>>> 12d9c6f26b2e96eb1fd9dac2a4b693989de960db
 }
