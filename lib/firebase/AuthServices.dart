@@ -102,7 +102,7 @@ class AuthServices{
   }
 
   //doctor signup
-  Future<UserCredential> doctorSignin (String email, String password, String name, List<String> patients) async {
+  Future<UserCredential> doctorSignin (String email, String password, String name, List<String> patients,String selectedCategory,String addressController,String ageController,String selectedGender) async {
     try{
       UserCredential userCredential =  await auth.createUserWithEmailAndPassword(
           email: email, password: password);
@@ -115,6 +115,10 @@ class AuthServices{
             'email': email,
             'name' : name,
             'patients': patients,
+            'category': selectedCategory,
+            'address': addressController,
+            'age': ageController,
+            'gender': selectedGender
           }
       );
       currentUserId = await  userCredential.user!.uid;
@@ -164,7 +168,7 @@ class AuthServices{
   }
 
   //doctor signup
-  Future<UserCredential> patientSignin (String email, String password, String name, List<String> doctors) async {
+  Future<UserCredential> patientSignin (String email, String password, String name, List<String> doctors,String weight,String height,String age,String gender) async {
     try{
       UserCredential userCredential =  await auth.createUserWithEmailAndPassword(
           email: email, password: password);
@@ -177,6 +181,10 @@ class AuthServices{
             'email': email,
             'name' : name,
             'doctors': doctors,
+            'weight': weight,
+            'height': height,
+            'age': age,
+            'gender': gender,
           }
       );
       currentUserId = await  userCredential.user!.uid;

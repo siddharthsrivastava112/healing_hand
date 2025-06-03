@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-class Doctor{
+import 'package:healing_hand/modelclass/doctor.dart';
+class Doctor {
   Image profile;//
   String name;//
   String category;
@@ -30,7 +32,7 @@ class Doctor{
 }
 
 List<Doctor> doctors = [sampleDoctor,doctor10,doctor10,doctor10, doctor1, doctor2, doctor3, doctor4, doctor5, doctor6, doctor7, doctor8, doctor9, doctor10];
-
+List<User> doctor=[];
 Doctor DoctorUser = Doctor(
     profile: Image.asset('assets/images/doctor.png'),
     name: 'Nihal',
@@ -80,7 +82,22 @@ class DoctorProvider extends ChangeNotifier{
     required String phone,
     required String email,
     required String bio,
-}){
+}) async{
+  await FirebaseFirestore.instance.collection("Doctors").add(
+    {
+            'profile': profile,
+            'name': name,
+            'category': category,
+            'age': age,
+            'gender': gender,
+            'phone': phone,
+            'email': email,
+            'address': address,
+            'rating': 1.0,
+           'bio': bio
+      
+    }
+  );
     doctors.add(
         Doctor(
             profile: profile,
@@ -96,6 +113,10 @@ class DoctorProvider extends ChangeNotifier{
         )
     );
     notifyListeners();
+    void DoctorList()
+    {
+      
+    }
   }
 
   void createUser({

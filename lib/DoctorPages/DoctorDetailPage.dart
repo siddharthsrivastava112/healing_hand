@@ -244,7 +244,7 @@ class _DoctorDetailPageState extends State<DoctorDetailPage> {
   void signin()async{
     final auth = AuthServices();
     try{
-      await auth.doctorSignin(pp.phoneController.text, pp.passwordController.text, pp.nameController.text, []);
+      await auth.doctorSignin(pp.phoneController.text, pp.passwordController.text, pp.nameController.text, [],selectedCategory,addressController.text.toString(),ageController.text.toString(),selectedGender.toString());
       //Navigator.push(context, MaterialPageRoute(builder: (context)=>DoctorLandingPage()));
     }
     catch (e) {

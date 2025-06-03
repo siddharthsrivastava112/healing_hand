@@ -143,7 +143,7 @@ class _PatientDetailPageState extends State<PatientDetailPage> {
                                       //     weight: int.parse(weightController.text)
                                       // );
                                       signin();
-                                      SaveRecord(context);
+                                     // SaveRecord(context);
                                       // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>PatientLandingPage()));
                                       // SharedPreferences prefs = await SharedPreferences.getInstance();
                                       // prefs.setString('FIRST_PAGE', 'patient');
@@ -213,7 +213,7 @@ class _PatientDetailPageState extends State<PatientDetailPage> {
     final auth = AuthServices();
     try{
       //await auth.signUpWithEmailPassword(phoneController.text, passwordController.text);
-      await auth.patientSignin(pp.phoneController.text, pp.passwordController.text, pp.nameController.text, []);
+      await auth.patientSignin(pp.phoneController.text, pp.passwordController.text, pp.nameController.text, [],weightController.text,heightController.text,ageController.text,selectedGender.toString());
       //Navigator.push(context, MaterialPageRoute(builder: (context)=>PatientLandingPage()));
     }
     catch (e) {
