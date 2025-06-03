@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 //import 'package:healing_hand/DoctorPages/DoctorSignupPage.dart';
 import 'package:healing_hand/PatientPages/PatientAccountPage.dart';
+import 'package:healing_hand/Providers/AppoinmentProvider.dart';
 import 'package:healing_hand/Providers/AppointmentProvider.dart';
 import 'package:healing_hand/Providers/DoctorProvider.dart';
 import 'package:healing_hand/Providers/PatientProvider.dart';
@@ -304,8 +305,9 @@ void initState() {
                         onPressed: () async {
                           DateTime date=DateTime.now();
                           String r=date.toString();
+                         Appoinmentprovider appoinmentprovider=Provider.of<Appoinmentprovider>(context,listen:false);
                           // request sent with date of 14/09/2024 it will be changed when doctor accepts request
-                          int h = await http.saverec(email1.toString(), p.phoneController.toString(),
+                           appoinmentprovider.addAppoinment(email1.toString(), p.phoneController.toString(),
                               r,DateTime.now().toString(),"wait",purposeController.text.toString());
                           Navigator.pop(context);
                         },
