@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:healing_hand/DoctorPages/PatientViewPage.dart';
 import 'package:healing_hand/modelclass/doctor.dart';
+import 'package:healing_hand/modelclass/prodmodal.dart';
 class Doctor {
   Image profile;//
   String name;//
@@ -32,7 +34,7 @@ class Doctor {
 }
 
 List<Doctor> doctors = [sampleDoctor,doctor10,doctor10,doctor10, doctor1, doctor2, doctor3, doctor4, doctor5, doctor6, doctor7, doctor8, doctor9, doctor10];
-List<User> doctor=[];
+
 Doctor DoctorUser = Doctor(
     profile: Image.asset('assets/images/doctor.png'),
     name: 'Nihal',
@@ -69,9 +71,10 @@ List<String> DoctorCategories = [
   'Dentist',
   'Emergency Specialist',
 ];
+List<prodModal> doctor=[];
 
 class DoctorProvider extends ChangeNotifier{
-
+bool isLoding=false;
   void addDoctor({
     required String address,
     required Image profile,
@@ -94,8 +97,7 @@ class DoctorProvider extends ChangeNotifier{
             'email': email,
             'address': address,
             'rating': 1.0,
-           'bio': bio
-      
+           'bio': bio      
     }
   );
     doctors.add(
@@ -112,12 +114,38 @@ class DoctorProvider extends ChangeNotifier{
            bio: bio
         )
     );
+ 
     notifyListeners();
-    void DoctorList()
+  }
+  
+    void DoctorList() 
     {
       
+       FirebaseFirestore.instance.collection('Doctor').snapshots().listen((snapshots) {
+      
+        for(var doc in snapshots.docs)
+        {
+          prodModal doctor1=prodModal(
+          name: doc['name'],
+         phone: '9838546052',
+          email: doc['email'],
+         
+         category:   doc['category'],
+          address: doc['address'],
+          age: doc['age'],
+           gender:  doc['gender'],
+          );
+          doctor.add(doctor1);
+       print(doctor.length);
+       
+        }
+       isLoding=true;
+      notifyListeners();
+      
+    });
+    
     }
-  }
+
 
   void createUser({
     //required Image profile,

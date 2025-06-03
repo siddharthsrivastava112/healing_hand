@@ -27,8 +27,6 @@ class _PatientSchedulePageState extends State<PatientSchedulePage> {
     return FutureBuilder<List<prodModal2>>(
       future: http.getAllPost2(key),
       builder: ((context, snapshot) {
-        print("calm downn");
-        // print(key);
         switch (snapshot.connectionState) {
           case ConnectionState.none:
             return Scaffold(

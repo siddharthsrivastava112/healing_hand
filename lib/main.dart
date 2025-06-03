@@ -6,6 +6,7 @@ import 'package:healing_hand/PatientPages/PatientLandingPage.dart';
 import 'package:healing_hand/PatientPages/PatientSignupPage.dart';
 import 'package:healing_hand/Providers/DoctorProvider.dart';
 import 'package:healing_hand/Providers/PatientProvider.dart';
+import 'package:healing_hand/Providers/RevieProvider.dart';
 import 'package:healing_hand/Providers/ThemeProvider.dart';
 import 'package:healing_hand/firebase_options.dart';
 import 'package:healing_hand/pages/HomePage.dart';
@@ -53,6 +54,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (context) => PatientProvider()),
         ChangeNotifierProvider(create: (context) => DoctorProvider()),
+        ChangeNotifierProvider(create:(context)=>Revieprovider()),
         ChangeNotifierProvider(create: (context) => ThemeProvider())
       ],
       child: Consumer<ThemeProvider>(

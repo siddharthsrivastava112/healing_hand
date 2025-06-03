@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:healing_hand/PatientPages/AppointmentRequestPage.dart';
 import 'package:healing_hand/PatientPages/CategoryViewPage.dart';
@@ -27,34 +29,27 @@ class PatientHomePage extends StatefulWidget {
 
 class _PatientHomePageState extends State<PatientHomePage> {
   bool gotLocation = false;
-
+   @override
+  void initState() {
+    super.initState();
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+    final doctorProvider = Provider.of<DoctorProvider>(context, listen: false);
+    doctorProvider.DoctorList();
+      }); // ✅ Call only once
+  }
   @override
   Widget build(BuildContext context) {
-    httpServices13 http=new httpServices13();
-    return FutureBuilder<List<prodModal>>(
-      future: http.getAllPost(key),
-      builder: ((context, snapshot) {
-        
-        // print(key);
-        switch (snapshot.connectionState) {
-          case ConnectionState.none:
-            return Scaffold(
-              body:
-                  Center(heightFactor: 1.4, child: CircularProgressIndicator()),
-            );
-          case ConnectionState.waiting:
-            return Scaffold(
-              body:
-                  Center(heightFactor: 0.4, child: CircularProgressIndicator()),
-            );
-          case ConnectionState.active:
-            return ShowPostList(context, snapshot.data!);
-
-          case ConnectionState.done:
-
-            //return CircularProgressIndicator();
-            return ShowPostList(context, snapshot.data!);
+    return Consumer<DoctorProvider>(
+      
+      builder: (context, doctorProvider,child){ 
+        if(!doctorProvider.isLoding)
+        {
+          return CircularProgressIndicator();
         }
+        else
+        {
+        return ShowPostList(context, doctor);}
+  });}
         //}
 
         //else{
@@ -62,9 +57,9 @@ class _PatientHomePageState extends State<PatientHomePage> {
         //}
 
         //  return CircularProgressIndicator();
-      }),
-    );
-}
+      
+    
+
 Widget ShowPostList(BuildContext context,List<prodModal> posts)
 {
   return Padding(
@@ -144,7 +139,7 @@ Widget ShowPostList(BuildContext context,List<prodModal> posts)
                                   image: AssetImage('assets/images/doctor.png'),
                                   onTap: (){
                                     Navigator.push(context, MaterialPageRoute(builder: (context) => DoctorViewPage(name: posts[index].name,
-                                    email: posts[index].email,category: posts[index].category,gender:posts[index].gender,
+                                    email: posts[index].email,category: posts[index].category,gender:posts[index].gender,age:posts[index].age,
                                     phone: posts[index].phone,)));
                                   },
                                 ),
@@ -250,4 +245,5 @@ lang1=position.latitude.toString();
 long1=position.longitude.toString();
     return position;
   }
+
 }

@@ -5,6 +5,7 @@ import 'package:healing_hand/PatientPages/PatientAccountPage.dart';
 import 'package:healing_hand/Providers/AppointmentProvider.dart';
 import 'package:healing_hand/Providers/DoctorProvider.dart';
 import 'package:healing_hand/Providers/PatientProvider.dart';
+import 'package:healing_hand/Providers/RevieProvider.dart';
 import 'package:healing_hand/apiconnection/doctorview.dart';
 import 'package:healing_hand/customWidgets/CircleImage.dart';
 import 'package:healing_hand/customWidgets/DoctorTile.dart';
@@ -57,39 +58,22 @@ class _DoctorViewPageState extends State<DoctorViewPage> {
   bool showAllReviews = false;
   TextEditingController reviewController = TextEditingController();
   double userRating = 0.0;
-
+void initState() {
+  super.initState();
+  Provider.of<Revieprovider>(context, listen: false).getreviews(email1.toString());
+}
   @override
   Widget build(BuildContext context) {
     // bool noReview = (doc.reviews == null);
     print("sid12");
     print(email1);
-    return FutureBuilder<List<prodModal1>>(
-      future: http.getAllPost3(email1),
-      builder: ((context, snapshot) {
-        print("calm down");
-        // print(key);
-        switch (snapshot.connectionState) {
-          case ConnectionState.none:
-            return Scaffold(
-              body:
-              Center(heightFactor: 1.4, child: CircularProgressIndicator()),
-            );
-          case ConnectionState.waiting:
-            return Scaffold(
-              body:
-              Center(heightFactor: 0.4, child: CircularProgressIndicator()),
-            );
-          case ConnectionState.active:
-            if (snapshot.data == null)
-              return ShowPostList(context, ff);
-            else
-              return ShowPostList(context, snapshot.data!);
+    return
+    Consumer<Revieprovider>(
+      builder: ((context, reviewProvider, child) {
 
-          case ConnectionState.done:
-          if (snapshot.data == null) return ShowPostList(context, ff);
-          //return CircularProgressIndicator();
-          return ShowPostList(context, snapshot.data!);
-        }
+              return ShowPostList(context, reviews);
+
+        }));
         //}
 
         //else{
@@ -97,13 +81,12 @@ class _DoctorViewPageState extends State<DoctorViewPage> {
         //}
 
         //  return CircularProgressIndicator();
-      }),
-    );
+     
   }
 
   Widget ShowPostList(BuildContext context, List<prodModal1> posts) {
-    if (rating1 == null) rating1 = "1";
-    print("iiii");
+    if (rating1 == null) rating1 = "3";
+    
     print(rating1);
     print(double.parse(rating1.toString()));
     return Scaffold(
@@ -204,6 +187,7 @@ class _DoctorViewPageState extends State<DoctorViewPage> {
                               ),
                           ],
                         ),
+                        
                         Container(
                             width: MediaQuery
                                 .of(context)
@@ -224,7 +208,7 @@ class _DoctorViewPageState extends State<DoctorViewPage> {
                                       itemBuilder: (context, index) {
                                         String review = posts[index].review
                                             .toString();
-                                        print("bbb");
+                                        
                                         print(review);
                                         // List<String> parts = review.split(': ');
 
@@ -388,13 +372,8 @@ class _DoctorViewPageState extends State<DoctorViewPage> {
             ),
             TextButton(
               onPressed: () async {
-                int j = await http.saverec1(
-                    "anonymus user", email1.toString(), review.toString());
-                if (j == 0)
-                  print("success");
-                else
-                  print("failure");
-                //_addReview();
+               Revieprovider reviewProvider = Provider.of<Revieprovider>(context, listen: false);
+               reviewProvider.addreview("anonymous user",email1.toString(), review.toString());
                 Navigator.pop(context);
               },
               child: Text('Post'),

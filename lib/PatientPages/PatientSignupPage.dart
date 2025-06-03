@@ -184,10 +184,7 @@ class _PatientSignupPageState extends State<PatientSignupPage> {
                                 remember=phoneController.text.toString();
                                 if(isLogin){
                                   login();
-                                  postApihttp http = postApihttp();
-                                  await http.saveData(phoneController.text.toString(),
-                                      passwordController.text.toString());
-                                  int j = await http.givedata(0);
+                                  int j = 0;
 
                                   if(j==0){
                                     Navigator.pushReplacement(
