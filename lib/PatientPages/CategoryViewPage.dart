@@ -4,6 +4,7 @@ import 'package:healing_hand/Providers/DoctorProvider.dart';
 import 'package:healing_hand/apiconnection/doctorview.dart';
 import 'package:healing_hand/customWidgets/DoctorTile.dart';
 import 'package:healing_hand/modelclass/prodmodal.dart';
+import 'package:provider/provider.dart';
 httpServices13 http=new httpServices13();
 String? key2;
 
@@ -28,47 +29,23 @@ class _CategoryViewPageState extends State<CategoryViewPage> {
     // List<Doctor> filteredList = doctors.where((obj) =>
     //     obj.category.toLowerCase() == widget.category.toLowerCase())
     //     .toList();
-
-
-    return  FutureBuilder<List<prodModal>>(
-      future: http.getAllPost(key2.toString()),
-      builder: ((context, snapshot) {
-        print("calm down");
-        // print(key);
-        switch (snapshot.connectionState) {
-          case ConnectionState.none:
-            return Scaffold(
-              body:
-                  Center(heightFactor: 1.4, child: CircularProgressIndicator()),
-            );
-          case ConnectionState.waiting:
-            return Scaffold(
-              body:
-                  Center(heightFactor: 0.4, child: CircularProgressIndicator()),
-            );
-          case ConnectionState.active:
-          if(snapshot.data!=null)
-            return ShowPostList(context, snapshot.data!);
-            else return Scaffold(
-              //backgroundColor: Colors.purple,
-              appBar: AppBar(title: Text(key2.toString()),),
-            );
-
-          case ConnectionState.done:
-if(snapshot.data!=null)
-            return ShowPostList(context, snapshot.data!);
-            else return Scaffold(
-              //backgroundColor: Colors.purple,
-              appBar: AppBar(title: Text(key2.toString()),),);        }
-        //}
+    void initState() {
+      super.initState();
+      // Fetch doctors when the widget is initialized
+      Provider.of<DoctorProvider>(context, listen: false).filterDoctorList(category);
+    }
+    return  Consumer<DoctorProvider>(
+      builder: (context, doctorprovider, child) {
+            return ShowPostList(context, filteredDoctor);
+      });
+          
 
         //else{
         //return CircularProgressIndicator();
         //}
 
         //  return CircularProgressIndicator();
-      }),
-    );
+     
   }
   Widget ShowPostList(BuildContext context,List<prodModal> posts)
   {

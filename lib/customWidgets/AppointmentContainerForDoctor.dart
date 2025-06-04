@@ -1,11 +1,16 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:healing_hand/DoctorPages/PatientViewPage.dart';
 import 'package:healing_hand/PatientPages/PatientAccountPage.dart';
-import 'package:healing_hand/Providers/AppointmentProvider.dart';
+import 'package:healing_hand/Providers/PatientProvider.dart';
+
 import 'package:healing_hand/customWidgets/AppointmentContainer.dart';
 import 'package:healing_hand/customWidgets/CircleImage.dart';
 import 'package:healing_hand/customWidgets/DoctorTile.dart';
+import 'package:healing_hand/modelclass/appoinment.dart';
 import 'package:healing_hand/modelclass/userer.dart';
+import 'package:provider/provider.dart';
 
 TextStyle nameSytle = const TextStyle(
     fontSize: 17,
@@ -14,10 +19,12 @@ TextStyle nameSytle = const TextStyle(
 );
 String? num1,date1,time1;
 DateTime? sdate,edate;
+prodModal2? appoi;
 class DocAppointmentContainer extends StatelessWidget {
   //final Appointment appointment;
-  DocAppointmentContainer(String num, String? date, String? time)
+  DocAppointmentContainer(String num, String? date, String? time,prodModal2 p1 )
   {
+    appoi=p1;
     num1=num;
     date1=date;
     time1=time;
@@ -27,30 +34,15 @@ class DocAppointmentContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(num1);
-    return FutureBuilder<List<prodModal3>>(
-      future: http.getAllPost5(num1),
-      builder: ((context, snapshot) {
-        
-        switch (snapshot.connectionState) {
-          case ConnectionState.none:
-            return Scaffold(
-              body:
-                  Center(heightFactor: 1.4, child: CircularProgressIndicator()),
-            );
-          case ConnectionState.waiting:
-            return Scaffold(
-              body:
-                  Center(heightFactor: 0.4, child: CircularProgressIndicator()),
-            );
-          case ConnectionState.active:
-            return ShowPostList(context, snapshot.data!);
-
-          case ConnectionState.done:
-
-            //return CircularProgressIndicator();
-            return ShowPostList(context, snapshot.data!);
-        }
+    void initState() {
+      // Fetch appointments when the widget is initialized
+      
+    }
+    return Consumer<PatientProvider>(        //return CircularProgressIndicator();
+            builder:(context, patientProvider, child) {
+      Provider.of<PatientProvider>(context, listen: false).ListPatients(num1!);
+            return ShowPostList(context, newwPatients);
+  });}
         //}
 
         //else{
@@ -58,9 +50,7 @@ class DocAppointmentContainer extends StatelessWidget {
         //}
 
         //  return CircularProgressIndicator();
-      }),
-    ); 
-  }
+  
   Widget ShowPostList(BuildContext context,List<prodModal3> posts)
   {
     return Container(
@@ -72,7 +62,7 @@ class DocAppointmentContainer extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(purpose1.toString(), style: nameSytle,),
+            Text(appoi!.purpose.toString(), style: nameSytle,),
             SizedBox(height: 5,),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,

@@ -6,9 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:healing_hand/DoctorPages/DoctorProfileEditPage.dart';
 import 'package:healing_hand/DoctorPages/DoctorProfileEditPage.dart' as t;
-import 'package:healing_hand/DoctorPages/DoctorSignupPage.dart';
+import 'package:healing_hand/DoctorPages/DoctorSignupPage.dart' as doctorsignup;
 import 'package:healing_hand/PatientPages/PatientAccountPage.dart';
 import 'package:healing_hand/Providers/DoctorProvider.dart';
+import 'package:healing_hand/Providers/RevieProvider.dart';
 import 'package:healing_hand/apiconnection/doctorview.dart';
 import 'package:healing_hand/customWidgets/CircleImage.dart';
 import 'package:healing_hand/customWidgets/WhiteContainer.dart';
@@ -32,35 +33,20 @@ class _DoctorAccountPageState extends State<DoctorAccountPage> {
   final Doctor doc;
   _DoctorAccountPageState({required this.doc});
   bool showAllReviews = false;
-
+void initState()
+{
+  super.initState();
+  Provider.of<DoctorProvider>(context,listen:false).DoctorList();
+  Provider.of<Revieprovider>(context,listen:false).getreviews(doctorsignup.phoneController.text); 
+}
   @override
   Widget build(BuildContext context) {
 
     
-    return FutureBuilder<List<prodModal>>(
-      future: http.getAllPost(""),
-      builder: ((context, snapshot) {
-        print("calm down");
-        // print(key);
-        switch (snapshot.connectionState) {
-          case ConnectionState.none:
-            return Scaffold(
-              body:
-                  Center(heightFactor: 1.4, child: CircularProgressIndicator()),
-            );
-          case ConnectionState.waiting:
-            return Scaffold(
-              body:
-                  Center(heightFactor: 0.4, child: CircularProgressIndicator()),
-            );
-          case ConnectionState.active:
-            return ShowPostList(context, snapshot.data!);
-
-          case ConnectionState.done:
-
-            //return CircularProgressIndicator();
-            return ShowPostList(context, snapshot.data!);
-        }
+    return Consumer<DoctorProvider>
+    (builder:(context,doctorprovider,child){ 
+                return ShowPostList(context, doctor);
+        });
         //}
 
         //else{
@@ -68,17 +54,16 @@ class _DoctorAccountPageState extends State<DoctorAccountPage> {
         //}
 
         //  return CircularProgressIndicator();
-      }),
-    );
+     
   }
   Widget ShowPostList(BuildContext context,List<prodModal> posts)
   {int i=0;
   
-    bool noReview = (doc.reviews == null);
+    bool noReview = (reviews == null);
    for(i=0;i<posts.length;i++)
    {
     
-    if(posts[i].email==pp.emailController.text.toString())
+    if(posts[i].email==doctorsignup.phoneController.text.toString())
     {return Scaffold(
       appBar: AppBar(
       ),
@@ -103,7 +88,7 @@ class _DoctorAccountPageState extends State<DoctorAccountPage> {
                                 //pass the current values to the edit page
                                 t.nameController.text=posts[i].name.toString();
                                 t.addressController.text=posts[i].address.toString();
-                                t.ageController.text="24";
+                                t.ageController.text=posts[i].age.toString();
                                 t.editedGender=posts[i].gender.toString();
                                 t.phoneController.text=posts[i].phone.toString();
                                 t.selectedCategory=posts[i].category.toString();
@@ -114,7 +99,7 @@ class _DoctorAccountPageState extends State<DoctorAccountPage> {
                           ),
                           Text(posts[i].name.toString(), style: nameSytle,),
                           Text(posts[i].category.toString(), style: profileStyle),
-                          Text('24 years', style: profileStyle,),
+                          Text(posts[i].age.toString()+' years', style: profileStyle,),
                           Text(posts[i].gender.toString(), style: profileStyle),
                           Text(posts[i].email.toString(), style: profileStyle),
                           
@@ -152,14 +137,13 @@ class _DoctorAccountPageState extends State<DoctorAccountPage> {
                                     // Display two recent reviews
                                     ListView.builder(
                                       shrinkWrap: true,
-                                      itemCount: showAllReviews ? doc.reviews!.length : doc.reviews!.length>=2 ? 2 : doc.reviews!.length,
+                                      itemCount: showAllReviews ? reviews!.length : reviews!.length>=2 ? 2 : reviews!.length,
                                       itemBuilder: (context, index) {
-                                        String review = doc.reviews![index];
-                                        List<String> parts = review.split(': ');
+                                       
 
                                         return ListTile(
-                                          title: Text(parts[0]),
-                                          subtitle: Text(parts[1]),
+                                          title: Text(reviews[index].email.toString()),
+                                          subtitle: Text(reviews[index].review.toString()),
                                         );
                                       },
                                     ),

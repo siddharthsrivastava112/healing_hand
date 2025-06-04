@@ -65,11 +65,11 @@ gender1=gender;
                                   child: Column(
                                     children: [
                                       SizedBox(height: 20,),
-                                      Text(name1.toString(), style: nameSytle,),
+                                      Text(user_name1.toString(), style: nameSytle,),
                                       Text('${age1.toString()} years', style: profileStyle,),
                                       Text(gender1.toString(), style: profileStyle),
                                       Text(phone1.toString(), style: profileStyle),
-                                      Text(email1.toString(), style: profileStyle),
+                                      Text(user_email1.toString(), style: profileStyle),
                                       Text('Aadhaar: Not available', style: profileStyle),
                                       Text('${height1}cm / ${weight1}Kg', style: profileStyle)
                                     ],
@@ -113,7 +113,7 @@ gender1=gender;
                           height: 67,
                           child: Center(
                               child: Text(
-                                  name1.toString(),
+                                  user_name1.toString(),
                                   style: titleStyle
                               )
                           ),

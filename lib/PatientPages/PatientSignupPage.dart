@@ -185,30 +185,6 @@ class _PatientSignupPageState extends State<PatientSignupPage> {
                                 if(isLogin){
                                   login();
                                   int j = 0;
-
-                                  if(j==0){
-                                    Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(builder: (context) => const PatientLandingPage())
-                                    );
-                                    // SharedPreferences prefs = await SharedPreferences.getInstance();
-                                    // prefs.setString('FIRST_PAGE', 'patient');
-                                    // print('Add here login verification');
-                                  }
-                                  else {
-                                    showDialog(
-                                        context: context,
-                                        builder: ((context) => AlertDialog(
-                                            title: const Text(
-                                                "Invalid email or password entered"),
-                                            content: ElevatedButton(
-                                              child: const Text("O.K"),
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                              },
-                                            )
-                                        )));
-                                  }
                                 }
                                 else
                                   Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>const PatientDetailPage()));
@@ -274,11 +250,27 @@ class _PatientSignupPageState extends State<PatientSignupPage> {
       //await authService.signInWithEmailPassword(phoneController.text, passwordController.text);
       await authService.patientLogin(phoneController.text, passwordController.text);
       //Navigator.push(context, MaterialPageRoute(builder: (context)=>PatientLandingPage()));
+                              Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(builder: (context) => const PatientLandingPage()));
+          
     }
 
     //catch error
     catch (e) {
-      print(e.toString());
+                                    showDialog(
+                                        context: context,
+                                        builder: ((context) => AlertDialog(
+                                            title: const Text(
+                                                "Invalid email or password entered"),
+                                            content: ElevatedButton(
+                                              child: const Text("O.K"),
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                            )
+                                        )));
+      
     }
   }
 

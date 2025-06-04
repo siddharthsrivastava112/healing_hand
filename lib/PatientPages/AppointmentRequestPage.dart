@@ -16,6 +16,11 @@ class AppointmentRequestPage extends StatefulWidget {
 }
 
 class _AppointmentRequestPageState extends State<AppointmentRequestPage> {
+  void initState() {
+    super.initState();
+    // Fetch appointments when the widget is initialized
+    Provider.of<Appoinmentprovider>(context, listen: false).showAppoinment();
+  }
   @override
   Widget build(BuildContext context) {
     return Consumer<Appoinmentprovider>(

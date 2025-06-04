@@ -161,19 +161,12 @@ class _PatientProfileEditPageState extends State<PatientProfileEditPage> {
                                       ),
                                       onPressed: () async{
                                         if(editorKey.currentState!.validate()){
-                                          PatientModel.createUser(
-                                              name: nameController.text,
-                                              gender: editedGender!,
-                                              age: int.parse(ageController.text),
-                                              phone: phoneController.text,
-                                              email: emailController.text,
-                                              height: int.parse(heightController.text),
-                                              weight: int.parse(weightController.text)
-                                          );
-                                          print(password);
-                                          postApihttp http=new postApihttp();
-                                          await http.saveData2(emailController.text.toString(), password!,nameController.text.toString(),
+                                        
+                                          
+                                          PatientProvider patientProvider = Provider.of<PatientProvider>(context, listen: false);
+                                          patientProvider.updatePatient(emailController.text.toString(), password!,nameController.text.toString(),
                                            heightController.text.toString(), weightController.text.toString(),editedGender.toString(), ageController.text.toString());
+                                        
                                         }
                                         Navigator.pop(context);
                                       },

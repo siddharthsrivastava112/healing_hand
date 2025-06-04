@@ -1,5 +1,5 @@
 class prodModal2 {
-  
+  String ?id;
  String? pmail;
  String? email;
  String? date;
@@ -8,7 +8,7 @@ class prodModal2 {
 String? purpose;
 String?enddate;
   prodModal2(
-      {
+      {this.id,
       this.pmail,
       this.email,
       this.date,

@@ -142,37 +142,7 @@ class _DoctorSignupPageState extends State<DoctorSignupPage> {
                                 if(isLogin){
                                   login();
                                   dno=phoneController.text.toString();
-                                  postApihttp http = postApihttp();
-                                  await http.saveData1(phoneController.text.toString(),
-                                      passwordController.text.toString());
-                                  int j = await http.givedata(0);
 
-                                  if(j==0) {
-                                    Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(builder: (context) => DoctorLandingPage())
-                                    );
-                                    // SharedPreferences prefs = await SharedPreferences.getInstance();
-                                    // prefs.setString('FIRST_PAGE', 'doctor');
-                                    // print('Add here login verification');
-                                  }
-                                  else
-                                  {
-                                    showDialog(
-                                        context: context,
-                                        builder: (
-                                                (context) => AlertDialog(
-                                                title: Text("Invalid email or password entered"),
-                                                content: ElevatedButton(
-                                                  child: Text("O.K"),
-                                                  onPressed: () {
-                                                    Navigator.pop(context);
-                                                  },
-                                                )
-                                            )
-                                        )
-                                    );
-                                  }
                                   // Navigator.pushReplacement(
                                   //     context,
                                   //     MaterialPageRoute(builder: (context) => DoctorLandingPage())
@@ -243,11 +213,30 @@ class _DoctorSignupPageState extends State<DoctorSignupPage> {
     try{
       UserCredential cred = await authService.doctorLogin(phoneController.text, passwordController.text);
       String hasdoctors = cred.user!.uid;
+        Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(builder: (context) => DoctorLandingPage())
+        );
       //Navigator.push(context, MaterialPageRoute(builder: (context)=>DoctorLandingPage()));
     }
 
     //catch error
     catch (e) {
+      
+                                    showDialog(
+                                        context: context,
+                                        builder: (
+                                                (context) => AlertDialog(
+                                                title: Text("Invalid email or password entered"),
+                                                content: ElevatedButton(
+                                                  child: Text("O.K"),
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                )
+                                            )
+                                        )
+                                    );
       print(e.toString());
     }
   }

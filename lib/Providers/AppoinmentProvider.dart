@@ -11,13 +11,14 @@ void addAppoinment(String email,String phoneno,String date,String time,String st
 {
   
   FirebaseFirestore.instance.collection('Appointments').add({
-    'umail':email,
-    'pmail':remember,
+   'umail':email,
+   'pmail':remember,
    'startdate':date,
    'enddate':time,
    'status':status,
    'purpose':purpose
 });
+
 }
 void showAppoinment()
 {
@@ -26,6 +27,7 @@ void showAppoinment()
   for(var doc in snapshot.docs)
   {
     prodModal2 apoinment=prodModal2(
+      id:doc.id,
       pmail:doc['pmail'],
       email:doc['umail'],
       date:doc['startdate'],
@@ -37,6 +39,19 @@ void showAppoinment()
   }
     notifyListeners();
   });
+}
+void updateappoinment(String email, String pmail,String purpose, String status, String date, String time,String id)
+{
+  print(id);
+  FirebaseFirestore.instance.collection('Appointments').doc(id).update({
+    'pmail':pmail,
+    'purpose':purpose,
+    'status':status,
+    'startdate':date,
+    'enddate':date,
+    
+  });
+  
 }
 
 }

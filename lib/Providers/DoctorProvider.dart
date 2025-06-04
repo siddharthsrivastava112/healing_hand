@@ -71,7 +71,7 @@ List<String> DoctorCategories = [
   'Dentist',
   'Emergency Specialist',
 ];
-List<prodModal> doctor=[];
+List<prodModal> doctor=[],filteredDoctor=[];
 
 class DoctorProvider extends ChangeNotifier{
 bool isLoding=false;
@@ -114,7 +114,6 @@ bool isLoding=false;
            bio: bio
         )
     );
- 
     notifyListeners();
   }
   
@@ -122,7 +121,7 @@ bool isLoding=false;
     {
       
        FirebaseFirestore.instance.collection('Doctor').snapshots().listen((snapshots) {
-      
+      doctor.clear();
         for(var doc in snapshots.docs)
         {
           prodModal doctor1=prodModal(
@@ -140,11 +139,28 @@ bool isLoding=false;
        
         }
        isLoding=true;
+       filteredDoctor=doctor;
       notifyListeners();
       
     });
     
     }
+    void filterDoctorList(String query) {
+
+  filteredDoctor = doctor.where((doc) {
+    final name = doc.name?.toLowerCase() ?? '';
+    final email = doc.email?.toLowerCase() ?? '';
+    final category = doc.category?.toLowerCase() ?? '';
+    final search = query.toLowerCase();
+
+    return name.contains(search) ||
+           email.contains(search) ||
+           category.contains(search);
+  }).toList();
+
+  notifyListeners(); // if using Provider
+}
+
 
 
   void createUser({
@@ -168,14 +184,28 @@ bool isLoding=false;
     DoctorUser.bio = bio;
     notifyListeners();
   }
-
+void updateDoctor(String emailController,String passwordController,String nameController,
+                                        String selectedCategory, String rating,String addressController,String editedGender,String  ageController)
+{
+  print(emailController);
+  FirebaseFirestore.instance.collection('Doctor').where('email', isEqualTo: emailController).get().then((snapshot) {
+ FirebaseFirestore.instance.collection('Doctor').doc(snapshot.docs[0].id).update({
+  'address': addressController,
+  'age':ageController,
+  'category': selectedCategory,
+  'gender': editedGender,
+  'name': nameController,
+  'email':emailController,
+  'password': passwordController,
+ });   
+});
   void addReview(String review, Doctor doc){
     doc.reviews?.add(review);
     notifyListeners();
   }
 
 }
-
+}
 
 Doctor sampleDoctor = Doctor(
     profile: Image.asset('assets/images/doctor.png'),

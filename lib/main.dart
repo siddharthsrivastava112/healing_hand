@@ -4,6 +4,7 @@ import 'package:healing_hand/DoctorPages/DoctorDetailPage.dart';
 import 'package:healing_hand/DoctorPages/DoctorLandingPage.dart';
 import 'package:healing_hand/PatientPages/PatientLandingPage.dart';
 import 'package:healing_hand/PatientPages/PatientSignupPage.dart';
+import 'package:healing_hand/Providers/AppoinmentProvider.dart';
 import 'package:healing_hand/Providers/DoctorProvider.dart';
 import 'package:healing_hand/Providers/PatientProvider.dart';
 import 'package:healing_hand/Providers/RevieProvider.dart';
@@ -55,7 +56,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => PatientProvider()),
         ChangeNotifierProvider(create: (context) => DoctorProvider()),
         ChangeNotifierProvider(create:(context)=>Revieprovider()),
-        ChangeNotifierProvider(create: (context) => ThemeProvider())
+        ChangeNotifierProvider(create: (context) => ThemeProvider()),
+        ChangeNotifierProvider(create:  (context) => Appoinmentprovider())
       ],
       child: Consumer<ThemeProvider>(
         builder: (context, ThemeModel, child) {

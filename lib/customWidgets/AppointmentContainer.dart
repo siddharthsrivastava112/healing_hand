@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:healing_hand/PatientPages/PatientAccountPage.dart';
-import 'package:healing_hand/Providers/AppointmentProvider.dart';
 import 'package:healing_hand/customWidgets/CircleImage.dart';
 import 'package:healing_hand/customWidgets/DoctorTile.dart';
 import 'package:healing_hand/customWidgets/WhiteContainer.dart';
@@ -45,7 +44,7 @@ class AppointmentContainer extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(purpose1.toString(), style: TextStyle(fontSize: 19, color: Colors.white),),
+            Text(purpose1.toString(), style: TextStyle(fontSize: 19, color: Colors.black),),
             SizedBox(height: 5,),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,

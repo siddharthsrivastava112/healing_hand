@@ -201,8 +201,8 @@ class _DoctorProfileEditPageState extends State<DoctorProfileEditPage> {
                                       // add function to update doctors details
 
                                       // print(password);
-                                     postApihttp http=new postApihttp();
-                                       await http.saveData4(emailController.text.toString(), passwordController.text.toString()!,nameController.text.toString(),
+                                 DoctorProvider provider=Provider.of<DoctorProvider>(context,listen:false);
+                                 provider.updateDoctor(emailController.text.toString(), passwordController.text.toString()!,nameController.text.toString(),
                                          selectedCategory.toString(), rating.toString(),addressController.text.toString(),editedGender.toString(), ageController.text.toString());
                                     }
                                     Navigator.pop(context);

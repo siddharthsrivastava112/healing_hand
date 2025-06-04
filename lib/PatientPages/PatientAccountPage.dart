@@ -26,32 +26,18 @@ Image content = Image.asset('assets/images/demo_user.jpg', fit: BoxFit.fill,);
 
 
 class _PatientAccountPageState extends State<PatientAccountPage> {
+ void initState() {
+    super.initState();
+  Provider.of<PatientProvider>(context, listen: false).ListPatients(remember);
+    
+  }
+  
   @override
   Widget build(BuildContext context) {
-
-        return FutureBuilder<List<prodModal3>>(
-      future: http.getAllPost5(remember),
-      builder: ((context, snapshot) {
-        
-        switch (snapshot.connectionState) {
-          case ConnectionState.none:
-            return Scaffold(
-              body:
-                  Center(heightFactor: 1.4, child: CircularProgressIndicator()),
-            );
-          case ConnectionState.waiting:
-            return Scaffold(
-              body:
-                  Center(heightFactor: 0.4, child: CircularProgressIndicator()),
-            );
-          case ConnectionState.active:
-            return ShowPostList(context, snapshot.data!);
-
-          case ConnectionState.done:
-
-            //return CircularProgressIndicator();
-            return ShowPostList(context, snapshot.data!);
-        }
+  return Consumer<PatientProvider>(
+          builder:(context, patientProvider, child) {
+            return ShowPostList(context, newwPatients);
+        });
         //}
 
         //else{
@@ -59,8 +45,7 @@ class _PatientAccountPageState extends State<PatientAccountPage> {
         //}
 
         //  return CircularProgressIndicator();
-      }),
-    ); 
+      
       }
 
     // );
@@ -83,7 +68,7 @@ class _PatientAccountPageState extends State<PatientAccountPage> {
                               Column(
                                 children: [
                                   Align(
-                                    alignment: Alignment.centerRight,
+                                      alignment: Alignment.centerRight,
                                     child: IconButton(
                                       onPressed: (){
                                       dd.password=posts[0].pass.toString();
@@ -92,8 +77,8 @@ class _PatientAccountPageState extends State<PatientAccountPage> {
                                         dd.editedGender=posts[0].gender.toString();
                                         dd.heightController.text=posts[0].height.toString();
                                         dd.weightController.text=posts[0].weight.toString();
-                                        dd.phoneController.text=remember.toString();
-                                        dd.ageController.text=24.toString();
+                                        dd.phoneController.text=posts[0].phone.toString();
+                                        dd.ageController.text=posts[0].age.toString();
                                         Navigator.push(context, MaterialPageRoute(builder: (context)=>PatientProfileEditPage()));
                                       },
                                       icon: const Icon(Icons.edit),
@@ -103,7 +88,7 @@ class _PatientAccountPageState extends State<PatientAccountPage> {
                                   Text('${posts[0].age} years', style: profileStyle,),
                                   Text(posts[0].gender.toString(), style: profileStyle),
                                   Text(remember, style: profileStyle),
-                                  Text(posts[0].user_email.toString(), style: profileStyle),
+                                  Text(posts[0].phone.toString(), style: profileStyle),
                                   Text('${posts[0].height}cm / ${posts[0].weight}Kg', style: profileStyle)
                                 ],
                               ),

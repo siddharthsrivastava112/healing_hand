@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:healing_hand/DoctorPages/DoctorDetailPage.dart';
+import 'package:healing_hand/DoctorPages/DoctorSignupPage.dart';
 import 'package:healing_hand/DoctorPages/NotificationPage.dart';
-import 'package:healing_hand/Providers/AppointmentProvider.dart';
+import 'package:healing_hand/Providers/AppoinmentProvider.dart';
 import 'package:healing_hand/Providers/DoctorProvider.dart';
 import 'package:healing_hand/customWidgets/AppointmentContainerForDoctor.dart';
 import 'package:healing_hand/customWidgets/CircleImage.dart';
@@ -17,35 +18,15 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
   bool gotLocation = false;
 
   @override
+  void initState() {
+    super.initState();
+    // Fetch appointments when the widget is initialized
+    Provider.of<Appoinmentprovider>(context, listen: false).showAppoinment();
+  }
   Widget build(BuildContext context) {
-    return  FutureBuilder<List<prodModal2>>(
-      future: http.getAllPost2(""),
-      builder: ((context, snapshot) {
-        print("calm down");
-        // print(key);
-        switch (snapshot.connectionState) {
-          case ConnectionState.none:
-            return Scaffold(
-              body:
-                  Center(heightFactor: 1.4, child: CircularProgressIndicator()),
-            );
-          case ConnectionState.waiting:
-            return Scaffold(
-              body:
-                  Center(heightFactor: 0.4, child: CircularProgressIndicator()),
-            );
-          case ConnectionState.active:
-          if(snapshot.data!=null)
-            //return CircularProgressIndicator();
-            return ShowPostList(context, snapshot.data!);
-            else
-            return CircularProgressIndicator();
-          case ConnectionState.done:
-          if(snapshot.data!=null)
-            //return CircularProgressIndicator();
-            return ShowPostList(context, snapshot.data!);
-            else
-            return CircularProgressIndicator();
+    return Consumer<Appoinmentprovider>(  
+    builder:(context,doctorProvider,child){
+                return ShowPostList(context, appointments);});
         }
         //}
 
@@ -54,11 +35,10 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
         //}
 
         //  return CircularProgressIndicator();
-      }),
-    );
-      }
+      
     Widget ShowPostList(BuildContext context,List<prodModal2> posts)
-    {
+    {print(posts.length);
+                           
       return Padding(
       padding: EdgeInsets.all(15),
       child: Column(
@@ -97,23 +77,22 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
                       children: [
                         ListView.builder(
                           shrinkWrap: true,
+                          itemCount: posts.length,
                           itemBuilder: (context, index){
-                            String s=posts[index].enddate.toString();
+                           
                             // Create a DateFormat with the appropriate pattern
- 
-                            if(index == 2) return null; // abhi ke lie pahle do appointment skip kar die
-                            // hain unme error aa rahi hai ,,, bad me ye condition hata denge
-                           if(   posts[index].status.toString() == 'accepted' && posts[index].email==emailController.text.toString())
+                           
+                           if(   posts[index].status.toString() == 'accepted' && posts[index].email==phoneController.text.toString())
                               return Column(
                                 children: [
-                                  DocAppointmentContainer(posts[index].pmail.toString(),posts[index].date,posts[index].enddate),
+                                  DocAppointmentContainer(posts[index].pmail.toString(),posts[index].date,posts[index].enddate,posts[index]),
                                   SizedBox(height: 10,)
                                 ],
                               );
                             else
-                              return Container();
+                             return Container();
                           },
-                          itemCount: posts.length,
+                          
                         ),
                       ],
                     ),

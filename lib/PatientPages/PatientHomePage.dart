@@ -7,7 +7,7 @@ import 'package:healing_hand/PatientPages/DoctorViewPage.dart';
 import 'package:healing_hand/PatientPages/PatientAccountPage.dart';
 import 'package:healing_hand/PatientPages/SearchPage.dart';
 import 'package:healing_hand/PatientPages/nearby_places_screen.dart';
-import 'package:healing_hand/Providers/AppointmentProvider.dart';
+
 import 'package:healing_hand/Providers/DoctorProvider.dart';
 import 'package:healing_hand/Providers/PatientProvider.dart';
 import 'package:healing_hand/apiconnection/doctorview.dart';

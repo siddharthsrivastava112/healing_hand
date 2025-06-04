@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:healing_hand/main.dart';
+import 'package:healing_hand/modelclass/userer.dart';
 
 class Patient{
   Image profile;
@@ -23,7 +26,7 @@ class Patient{
 }
 
 List<Patient> patients = [];
-
+List<prodModal3> newwPatients = []; 
 Patient PatientUser = Patient(
     profile: Image.asset('assets/images/demo_user.jpg'),
     name: 'Sample user',
@@ -79,6 +82,47 @@ class PatientProvider extends ChangeNotifier{
     PatientUser.email = email;
     print('User details changed');
     notifyListeners();
+  }
+  void ListPatients(String email)
+  {
+    FirebaseFirestore.instance.collection('Patient').where('email',isEqualTo: 'abhishek@gmail.com').snapshots().listen((snapshot){
+     newwPatients.clear();
+      for(var doc in snapshot.docs)
+      {
+        prodModal3 patient = prodModal3(
+          user_name: doc['name'],
+          phone: '9838546052',
+          user_email: doc['email'],
+          gender: doc['gender'],
+          age: doc['age'],
+          height: doc['height'],
+          weight: doc['weight'],
+        );
+        newwPatients.add(patient);
+      }
+      
+      notifyListeners();
+    });
+  }
+  void updatePatient(String emailController ,String password,String nameController,String heightController, String weightController,String editedGender,String ageController)                                      
+  {print(emailController);
+  print("siddharth12");
+    FirebaseFirestore.instance.collection('Patient').where('email',isEqualTo: emailController).get().then((value){
+      for(var doc in value.docs)
+      {
+      FirebaseFirestore.instance.collection('Patient').doc(doc.id).update(
+      {
+        'name': nameController,
+        'height': heightController,
+        'weight': weightController,
+        'gender': editedGender,
+        'age': ageController,
+        'email': emailController,
+        'password': password,
+      }
+    );
+    }});
+    
   }
 }
 

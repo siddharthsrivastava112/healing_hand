@@ -3,6 +3,7 @@ import 'package:healing_hand/Providers/DoctorProvider.dart';
 import 'package:healing_hand/apiconnection/doctorview.dart';
 import 'package:healing_hand/customWidgets/DoctorTile.dart';
 import 'package:healing_hand/modelclass/prodmodal.dart';
+import 'package:provider/provider.dart';
 httpServices13 http=new httpServices13();
 List<prodModal> l1=[];
 class SearchPage extends StatefulWidget {
@@ -18,42 +19,17 @@ class _SearchPageState extends State<SearchPage> {
   bool searchByName = true;
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<prodModal>>(
-      future: http.getAllPost(key),
-      builder: ((context, snapshot) {
-        print("calm down");
-        // print(key);
-        switch (snapshot.connectionState) {
-          case ConnectionState.none:
-            return Scaffold(
-              body:
-                  Center(heightFactor: 1.4, child: CircularProgressIndicator()),
-            );
-          case ConnectionState.waiting:
-          return ShowPostList(context, l1!);  
-                       
-         
-          case ConnectionState.active:
-          if(snapshot.data!=null)
-            return ShowPostList(context, snapshot.data!);
-            else return ShowPostList(context,l1);
-
-          case ConnectionState.done:
-          if(snapshot.data!=null)
-            //return CircularProgressIndicator();
-            return ShowPostList(context, snapshot.data!);
-            else return ShowPostList(context, l1);
-        }
+    return Consumer<DoctorProvider>(
+      builder:(context,doctorprovider,child)
+      {
+    return ShowPostList(context, filteredDoctor);
+   } );}
         //}
-
         //else{
         //return CircularProgressIndicator();
         //}
-
-        //  return CircularProgressIndicator();
-      }),
-    );  
-  }
+            //  return CircularProgressIndicator();
+  
   Widget ShowPostList(BuildContext context,List<prodModal> posts)
   {key="";
   if(posts!=null) l1=posts;
@@ -96,18 +72,8 @@ class _SearchPageState extends State<SearchPage> {
             ),
           ),
           onChanged: (query) {
-            setState(() {
-              key=query;
-            //   filteredObjects = searchByName?
-            //   doctors.where((obj) =>
-            //   obj.name.toLowerCase().contains(query.toLowerCase()))
-            //       .toList() :
-            //   doctors.where((obj) =>
-            //   obj.category.toLowerCase().contains(query.toLowerCase()))
-            //       .toList();
-            //   //sorting the new list in reverse lexigraphical order
-            //   filteredObjects.sort((a, b) => b.name.compareTo(a.name));
-             });
+            DoctorProvider doctorProvider = Provider.of<DoctorProvider>(context, listen: false);
+            doctorProvider.filterDoctorList(query);
           },
         )
       ),

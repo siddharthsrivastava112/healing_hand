@@ -22,8 +22,13 @@ class PatientSchedulePage extends StatefulWidget {
 }
 
 class _PatientSchedulePageState extends State<PatientSchedulePage> {
+ 
   @override
-
+void initState() {
+    super.initState();
+    // Fetch appointments when the widget is initialized
+    Provider.of<Appoinmentprovider>(context, listen: false).showAppoinment();
+  }
   Widget build(BuildContext context) {
     return Consumer<Appoinmentprovider>(
 
@@ -37,13 +42,13 @@ class _PatientSchedulePageState extends State<PatientSchedulePage> {
     bool noUpComApp = true;
     bool noPastApp = true;
     print(posts.length);
-    for(int i=2; i<posts.length; i++){
+    for(int i=0; i<posts.length; i++){
       print(posts[i].status);
-      print(DateTime.parse(posts[i].date.toString()));
-      print(DateTime.parse(posts[i].enddate.toString()));
-      if(DateTime.parse(posts[i].date.toString()).isAfter(DateTime.now()))
+    //  print(DateTime.parse(posts[i].date.toString()));
+      //print(DateTime.parse(posts[i].enddate.toString()));
+      if(DateTime.parse(posts[i].date.toString()).isAfter(DateTime.now()) && remember.toString()==posts[i].pmail.toString() && posts[i].status=='accepted')
         noUpComApp = false;
-      else
+      else if(remember.toString()==posts[i].pmail.toString() && posts[i].status=='accepted')
         noPastApp = false;
       print(noPastApp);
       print(noUpComApp);
@@ -66,7 +71,7 @@ class _PatientSchedulePageState extends State<PatientSchedulePage> {
             if(posts.length == 0 || noUpComApp)
               WhiteContainer(child: Text('No Upcoming Appointments', style: nameSytle,)),
             //not used listview builder because it altered the scroll above the list
-            for(int i=2; i<posts.length; i++)
+            for(int i=0; i<posts.length; i++)
               if(posts[i].pmail==remember.toString() && posts[i].status == 'accepted' && DateTime.parse(posts[i].enddate.toString()).isAfter(DateTime.now()))
               Column(
                 children: [
@@ -84,7 +89,7 @@ class _PatientSchedulePageState extends State<PatientSchedulePage> {
             if(posts.length == 0 || noPastApp)
               WhiteContainer(child: Text('No Past Consultations', style: nameSytle,)),
             //not used listview builder because it altered the scroll above the list
-            for(int i=2; i<posts.length; i++)
+            for(int i=0; i<posts.length; i++)
               if(posts[i].pmail==remember.toString() && posts[i].status == 'accepted' && DateTime.parse(posts[i].enddate.toString()).isBefore(DateTime.now()))
               Column(
                 children: [
